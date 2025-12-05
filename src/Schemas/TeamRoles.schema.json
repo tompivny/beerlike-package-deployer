@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Team Security Roles Assignment",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "team": {
+        "type": "string",
+        "description": "The team identifier, which can be a \"name\" or a \"teamid\"."
+      },
+      "removeUnassigned": {
+        "type": "boolean",
+        "default": false,
+        "description": "Whether to remove unassigned security roles."
+      },
+      "securityRoles": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$",
+          "description": "ID of the Dataverse security role."
+        }
+      }
+    },
+    "required": [
+      "team",
+      "securityRoles"
+    ],
+    "additionalProperties": false
+  }
+}
