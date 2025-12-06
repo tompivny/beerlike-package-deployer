@@ -402,3 +402,6 @@ FodyWeavers.xsd
 
 # VSCode settings
 .vscode
+
+# Cursor rules
+.cursor/**
