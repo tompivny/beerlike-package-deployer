@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>11.0</LangVersion>
-    <VersionPrefix>0.0.15</VersionPrefix>
+    <VersionPrefix>0.0.1</VersionPrefix>
     <!-- Package properties -->
     <PackageId>BeerLike.PackageDeployer</PackageId>
     <Title>BeerLike Package Deployer</Title>
