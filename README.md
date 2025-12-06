@@ -1,0 +1,2 @@
+# BeerLike Package Deployer
+This a .NET library that provides custom extensions for Power Platform [Package Deployer](https://learn.microsoft.com/en-us/power-platform/alm/package-deployer-tool?tabs=cli) projects.
