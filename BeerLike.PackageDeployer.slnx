@@ -5,6 +5,7 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/src/">
-    <Project Path="src/BeerLike.PackageDeployer.csproj" />
+    <Project Path="src/BeerLike.PackageDeployer/BeerLike.PackageDeployer.csproj" />
+    <Project Path="src/BeerLike.PackageDeployer.BuildTasks/BeerLike.PackageDeployer.BuildTasks.csproj" />
   </Folder>
 </Solution>
