@@ -4,13 +4,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>11.0</LangVersion>
-    <VersionPrefix>0.0.1</VersionPrefix>
+    <VersionPrefix>0.0.2</VersionPrefix>
     <!-- Package properties -->
     <PackageId>BeerLike.PackageDeployer</PackageId>
     <Title>BeerLike Package Deployer</Title>
     <Description>Package Deployer Extension library</Description>
     <Authors>Tomas Pivny</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <!-- Ensures that content files are copied -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <!-- Register our custom target for adding BuildTasks to the package -->
@@ -28,6 +29,11 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
     </ProjectReference>
+  </ItemGroup>
+
+  <!-- Include README in the package -->
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <!-- Include schema files in the package (from Shared folder) -->
