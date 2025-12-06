@@ -10,6 +10,7 @@
     <Title>BeerLike Package Deployer</Title>
     <Description>Package Deployer Extension library</Description>
     <Authors>Tomas Pivny</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <!-- Ensures that content files are copied -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <!-- Register our custom target for adding BuildTasks to the package -->
