@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net462</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>11.0</LangVersion>
+    <VersionPrefix>0.0.15</VersionPrefix>
+    <!-- Package properties -->
+    <PackageId>BeerLike.PackageDeployer</PackageId>
+    <Title>BeerLike Package Deployer</Title>
+    <Description>Package Deployer Extension library</Description>
+    <Authors>Tomas Pivny</Authors>
+    <!-- Ensures that content files are copied -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- Register our custom target for adding BuildTasks to the package -->
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);IncludeBuildTasksInPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" /> 
+    <PackageReference Include="Microsoft.CrmSdk.XrmTooling.PackageDeployment" Version="9.1.0.184" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Reference BuildTasks project - only for build ordering, not assembly reference -->
+  <ItemGroup>
+    <ProjectReference Include="..\BeerLike.PackageDeployer.BuildTasks\BeerLike.PackageDeployer.BuildTasks.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+    </ProjectReference>
+  </ItemGroup>
+
+  <!-- Include schema files in the package (from Shared folder) -->
+  <ItemGroup>
+    <Content Include="..\Shared\Schemas\*.*" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="contentFiles\any\any\Schemas\" />
+  </ItemGroup>
+
+  <!-- Embed schema files as resources for runtime access -->
+  <ItemGroup>
+    <EmbeddedResource Include="..\Shared\Schemas\*.schema.json" LinkBase="Schemas" />
+  </ItemGroup>
+
+  <!-- Include template files in the package (from Shared folder) -->
+  <ItemGroup>
+    <Content Include="..\Shared\Templates\*.*" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="contentFiles\any\any\Templates\" />
+  </ItemGroup>
+
+  <!-- Include MSBuild props and targets in the package -->
+  <ItemGroup>
+    <None Include="..\BeerLike.PackageDeployer.BuildTasks\BeerLike.PackageDeployer.props" Pack="true" PackagePath="build\BeerLike.PackageDeployer.props" />
+    <None Include="..\BeerLike.PackageDeployer.BuildTasks\BeerLike.PackageDeployer.targets" Pack="true" PackagePath="build\BeerLike.PackageDeployer.targets" />
+  </ItemGroup>
+
+  <!-- Dynamically include BuildTasks DLLs in the package -->
+  <Target Name="IncludeBuildTasksInPackage">
+    <PropertyGroup>
+      <BuildTasksOutputPath>$(MSBuildProjectDirectory)\..\BeerLike.PackageDeployer.BuildTasks\bin\$(Configuration)\net462\</BuildTasksOutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(BuildTasksOutputPath)BeerLike.PackageDeployer.BuildTasks.dll" PackagePath="build\tasks\" />
+      <TfmSpecificPackageFile Include="$(BuildTasksOutputPath)Newtonsoft.Json.dll" PackagePath="build\tasks\" />
+      <TfmSpecificPackageFile Include="$(BuildTasksOutputPath)Newtonsoft.Json.Schema.dll" PackagePath="build\tasks\" />
+    </ItemGroup>
+  </Target>
+
+</Project>

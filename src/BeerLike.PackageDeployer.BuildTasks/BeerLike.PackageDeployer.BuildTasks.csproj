@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <LangVersion>11.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- This assembly is only for MSBuild tasks - no Xrm dependencies -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- JSON schema validation - GeneratePathProperty creates $(PkgPackage_Name) variables -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" GeneratePathProperty="true" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" GeneratePathProperty="true" />
+    <!-- MSBuild utilities - don't copy to output (available at build time) -->
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.3.2" PrivateAssets="all" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <!-- Copy only the specific dependencies we need alongside the task DLL -->
+  <Target Name="CopyTaskDependencies" AfterTargets="Build">
+    <Copy SourceFiles="$(PkgNewtonsoft_Json)\lib\net45\Newtonsoft.Json.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(PkgNewtonsoft_Json_Schema)\lib\net45\Newtonsoft.Json.Schema.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

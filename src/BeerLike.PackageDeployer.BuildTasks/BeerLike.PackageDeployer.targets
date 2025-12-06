@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <!-- 
+    Register the custom MSBuild task from the separate BuildTasks assembly.
+    This assembly has no Xrm dependencies, only Newtonsoft.Json.Schema for validation.
+  -->
+  <UsingTask 
+    TaskName="BeerLike.PackageDeployer.BuildTasks.Tasks.ValidateOrInitializeJsonTask" 
+    AssemblyFile="$(MSBuildThisFileDirectory)tasks\BeerLike.PackageDeployer.BuildTasks.dll" />
+
+  <!-- Target to validate or initialize Team Roles JSON -->
+  <Target Name="ValidateTeamRolesJson">
+    <ValidateOrInitializeJsonTask
+      JsonFilePath="$(TeamRolesJsonPath)"
+      SchemaFilePath="$(TeamRolesSchemaPath)"
+      TemplateFilePath="$(TeamRolesTemplatePath)" />
+  </Target>
+
+  <!-- Target to validate or initialize Team CSPs JSON -->
+  <Target Name="ValidateTeamCspsJson">
+    <ValidateOrInitializeJsonTask
+      JsonFilePath="$(TeamCspsJsonPath)"
+      SchemaFilePath="$(TeamCspsSchemaPath)"
+      TemplateFilePath="$(TeamCspsTemplatePath)" />
+  </Target>
+
+  <!-- Convenience target to validate all package configuration files -->
+  <Target Name="ValidatePackageConfigs" DependsOnTargets="ValidateTeamRolesJson;ValidateTeamCspsJson" />
+
+</Project>
