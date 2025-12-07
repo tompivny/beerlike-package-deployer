@@ -6,26 +6,26 @@
     This assembly has no Xrm dependencies, only Newtonsoft.Json.Schema for validation.
   -->
   <UsingTask 
-    TaskName="BeerLike.PackageDeployer.BuildTasks.Tasks.ValidateOrInitializeJsonTask" 
+    TaskName="BeerLike.PackageDeployer.BuildTasks.Tasks.ValidateOrInitializeConfig" 
     AssemblyFile="$(MSBuildThisFileDirectory)tasks\BeerLike.PackageDeployer.BuildTasks.dll" />
 
   <!-- Target to validate or initialize Team Roles JSON -->
-  <Target Name="ValidateTeamRolesJson">
-    <ValidateOrInitializeJsonTask
-      JsonFilePath="$(TeamRolesJsonPath)"
-      SchemaFilePath="$(TeamRolesSchemaPath)"
-      TemplateFilePath="$(TeamRolesTemplatePath)" />
+  <Target Name="ValidateTeamRolesConfig">
+    <ValidateOrInitializeConfig
+      ConfigFilePath="$(TeamRolesConfig)"
+      ConfigSchemaFilePath="$(TeamRolesSchema)"
+      ConfigTemplateFilePath="$(TeamRolesTemplate)" />
   </Target>
 
   <!-- Target to validate or initialize Team CSPs JSON -->
-  <Target Name="ValidateTeamCspsJson">
-    <ValidateOrInitializeJsonTask
-      JsonFilePath="$(TeamCspsJsonPath)"
-      SchemaFilePath="$(TeamCspsSchemaPath)"
-      TemplateFilePath="$(TeamCspsTemplatePath)" />
+  <Target Name="ValidateTeamCspsConfig">
+    <ValidateOrInitializeConfig
+      ConfigFilePath="$(TeamCspsConfig)"
+      ConfigSchemaFilePath="$(TeamCspsSchema)"
+      ConfigTemplateFilePath="$(TeamCspsTemplate)" />
   </Target>
 
   <!-- Convenience target to validate all package configuration files -->
-  <Target Name="ValidatePackageConfigs" DependsOnTargets="ValidateTeamRolesJson;ValidateTeamCspsJson" />
+  <Target Name="ValidatePackageConfigs" DependsOnTargets="ValidateTeamRolesConfig;ValidateTeamCspsConfig" />
 
 </Project>

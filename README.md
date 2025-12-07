@@ -54,8 +54,8 @@ Add the following properties and target to your package deployer `.csproj` file 
 ```xml
 <!-- Configure paths for BeerLike.PackageDeployer JSON validation/initialization -->
 <PropertyGroup>
-  <TeamRolesJsonPath>$(MSBuildProjectDirectory)\PkgAssets\TeamRoles.json</TeamRolesJsonPath>
-  <TeamCspsJsonPath>$(MSBuildProjectDirectory)\PkgAssets\TeamCsps.json</TeamCspsJsonPath>
+  <TeamRolesConfig>$(MSBuildProjectDirectory)\PkgAssets\TeamRoles.json</TeamRolesConfig>
+  <TeamCspsConfig>$(MSBuildProjectDirectory)\PkgAssets\TeamCsps.json</TeamCspsConfig>
 </PropertyGroup>
 
 <!-- Runs JSON validation/initialization before build -->

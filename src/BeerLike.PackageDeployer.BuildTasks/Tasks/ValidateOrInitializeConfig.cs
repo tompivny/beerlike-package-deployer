@@ -9,31 +9,31 @@ namespace BeerLike.PackageDeployer.BuildTasks.Tasks;
 /// <summary>
 /// MSBuild Task that validates a JSON file against a schema, or initializes it from a template if it doesn't exist.
 /// </summary>
-public class ValidateOrInitializeJsonTask : MSBuildTask
+public class ValidateOrInitializeConfig : MSBuildTask
 {
     /// <summary>
     /// Path to the JSON file to validate or create.
     /// </summary>
     [Required]
-    public string JsonFilePath { get; set; } = string.Empty;
+    public string ConfigFilePath { get; set; } = string.Empty;
 
     /// <summary>
     /// Path to the JSON schema file used for validation.
     /// </summary>
     [Required]
-    public string SchemaFilePath { get; set; } = string.Empty;
+    public string ConfigSchemaFilePath { get; set; } = string.Empty;
 
     /// <summary>
     /// Path to the template file used for initialization when the JSON file doesn't exist.
     /// </summary>
     [Required]
-    public string TemplateFilePath { get; set; } = string.Empty;
+    public string ConfigTemplateFilePath { get; set; } = string.Empty;
 
     public override bool Execute()
     {
         try
         {
-            if (!File.Exists(JsonFilePath))
+            if (!File.Exists(ConfigFilePath))
             {
                 return InitializeFromTemplate();
             }
@@ -42,51 +42,51 @@ public class ValidateOrInitializeJsonTask : MSBuildTask
         }
         catch (System.Exception ex)
         {
-            Log.LogError($"Unexpected error processing '{JsonFilePath}': {ex.Message}");
+            Log.LogError($"Unexpected error processing '{ConfigFilePath}': {ex.Message}");
             return false;
         }
     }
 
     private bool InitializeFromTemplate()
     {
-        if (!File.Exists(TemplateFilePath))
+        if (!File.Exists(ConfigTemplateFilePath))
         {
-            Log.LogError($"Template file not found: '{TemplateFilePath}'");
+            Log.LogError($"Template file not found: '{ConfigTemplateFilePath}'");
             return false;
         }
 
         try
         {
-            var directory = Path.GetDirectoryName(JsonFilePath);
+            var directory = Path.GetDirectoryName(ConfigFilePath);
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
                 Log.LogMessage(MessageImportance.Normal, $"Created directory: '{directory}'");
             }
 
-            File.Copy(TemplateFilePath, JsonFilePath);
-            Log.LogMessage(MessageImportance.High, $"Initialized '{JsonFilePath}' from template '{TemplateFilePath}'");
+            File.Copy(ConfigTemplateFilePath, ConfigFilePath);
+            Log.LogMessage(MessageImportance.High, $"Initialized '{ConfigFilePath}' from template '{ConfigTemplateFilePath}'");
             return true;
         }
         catch (System.Exception ex)
         {
-            Log.LogError($"Failed to initialize '{JsonFilePath}' from template: {ex.Message}");
+            Log.LogError($"Failed to initialize '{ConfigFilePath}' from template: {ex.Message}");
             return false;
         }
     }
 
     private bool ValidateAgainstSchema()
     {
-        if (!File.Exists(SchemaFilePath))
+        if (!File.Exists(ConfigSchemaFilePath))
         {
-            Log.LogError($"Schema file not found: '{SchemaFilePath}'");
+            Log.LogError($"Schema file not found: '{ConfigSchemaFilePath}'");
             return false;
         }
 
         try
         {
-            var jsonContent = File.ReadAllText(JsonFilePath);
-            var schemaContent = File.ReadAllText(SchemaFilePath);
+            var jsonContent = File.ReadAllText(ConfigFilePath);
+            var schemaContent = File.ReadAllText(ConfigSchemaFilePath);
 
             JSchema schema = JSchema.Parse(schemaContent);
             JToken jsonToValidate = JToken.Parse(jsonContent);
@@ -95,7 +95,7 @@ public class ValidateOrInitializeJsonTask : MSBuildTask
 
             if (isValid)
             {
-                Log.LogMessage(MessageImportance.Normal, $"Validated '{JsonFilePath}' against schema successfully.");
+                Log.LogMessage(MessageImportance.Normal, $"Validated '{ConfigFilePath}' against schema successfully.");
                 return true;
             }
 
@@ -105,7 +105,7 @@ public class ValidateOrInitializeJsonTask : MSBuildTask
                     subcategory: "JSON Schema",
                     errorCode: error.ErrorType.ToString(),
                     helpKeyword: null,
-                    file: JsonFilePath,
+                    file: ConfigFilePath,
                     lineNumber: error.LineNumber,
                     columnNumber: error.LinePosition,
                     endLineNumber: 0,
@@ -121,7 +121,7 @@ public class ValidateOrInitializeJsonTask : MSBuildTask
                 subcategory: "JSON Parse",
                 errorCode: "InvalidJson",
                 helpKeyword: null,
-                file: JsonFilePath,
+                file: ConfigFilePath,
                 lineNumber: ex.LineNumber,
                 columnNumber: ex.LinePosition,
                 endLineNumber: 0,

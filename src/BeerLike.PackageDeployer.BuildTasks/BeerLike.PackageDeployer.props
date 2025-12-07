@@ -4,20 +4,20 @@
   <PropertyGroup>
     <DefaultPackageAssetsDirectory>$(MSBuildThisFileDirectory)\PkgAssets</DefaultPackageAssetsDirectory>
     <!-- Directory containing JSON schema files -->
-    <BeerLikeSchemaDirectory Condition="'$(BeerLikeSchemaDirectory)' == ''">$(MSBuildThisFileDirectory)..\contentFiles\any\any\Schemas\</BeerLikeSchemaDirectory>
+    <SchemaDirectory Condition="'$(SchemaDirectory)' == ''">$(MSBuildThisFileDirectory)..\contentFiles\any\any\Schemas\</SchemaDirectory>
     
     <!-- Directory containing template files -->
-    <BeerLikeTemplateDirectory Condition="'$(BeerLikeTemplateDirectory)' == ''">$(MSBuildThisFileDirectory)..\contentFiles\any\any\Templates\</BeerLikeTemplateDirectory>
+    <TemplateDirectory Condition="'$(TemplateDirectory)' == ''">$(MSBuildThisFileDirectory)..\contentFiles\any\any\Templates\</TemplateDirectory>
     
     <!-- Default paths for Team Roles JSON configuration -->
-    <TeamRolesJsonPath Condition="'$(TeamRolesJsonPath)' == ''">$(DefaultPackageAssetsDirectory)\TeamRoles.json</TeamRolesJsonPath>
-    <TeamRolesSchemaPath Condition="'$(TeamRolesSchemaPath)' == ''">$(BeerLikeSchemaDirectory)TeamRoles.schema.json</TeamRolesSchemaPath>
-    <TeamRolesTemplatePath Condition="'$(TeamRolesTemplatePath)' == ''">$(BeerLikeTemplateDirectory)TeamRoles.json</TeamRolesTemplatePath>
+    <TeamRolesConfig Condition="'$(TeamRolesConfig)' == ''">$(DefaultPackageAssetsDirectory)\TeamRoles.json</TeamRolesConfig>
+    <TeamRolesSchema Condition="'$(TeamRolesSchema)' == ''">$(SchemaDirectory)TeamRoles.schema.json</TeamRolesSchema>
+    <TeamRolesTemplate Condition="'$(TeamRolesTemplate)' == ''">$(TemplateDirectory)TeamRoles.json</TeamRolesTemplate>
     
     <!-- Default paths for Team CSPs JSON configuration -->
-    <TeamCspsJsonPath Condition="'$(TeamCspsJsonPath)' == ''">$(DefaultPackageAssetsDirectory)\TeamCsps.json</TeamCspsJsonPath>
-    <TeamCspsSchemaPath Condition="'$(TeamCspsSchemaPath)' == ''">$(BeerLikeSchemaDirectory)TeamCsps.schema.json</TeamCspsSchemaPath>
-    <TeamCspsTemplatePath Condition="'$(TeamCspsTemplatePath)' == ''">$(BeerLikeTemplateDirectory)TeamCsps.json</TeamCspsTemplatePath>
+    <TeamCspsConfig Condition="'$(TeamCspsConfig)' == ''">$(DefaultPackageAssetsDirectory)\TeamCsps.json</TeamCspsConfig>
+    <TeamCspsSchema Condition="'$(TeamCspsSchema)' == ''">$(SchemaDirectory)TeamCsps.schema.json</TeamCspsSchema>
+    <TeamCspsTemplate Condition="'$(TeamCspsTemplate)' == ''">$(TemplateDirectory)TeamCsps.json</TeamCspsTemplate>
   </PropertyGroup>
 
 </Project>
