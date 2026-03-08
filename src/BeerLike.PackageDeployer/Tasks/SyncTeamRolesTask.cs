@@ -34,12 +34,18 @@ internal class SyncTeamRolesTask : TaskBase
             }
 
             var currentTeamRoles = DataverseService.RetrieveTeamRoles(team);
-            var rolesToAssign = teamRoleAssignment.SecurityRoles?.Select(roleId => DataverseService.RetrieveRole(roleId)).Where(role => role != null).Select(r => r!).ToList();
+            var alreadyAssignedRoleIds = new HashSet<Guid>(currentTeamRoles.Select(tr => tr.GetAttributeValue<Guid>(TeamRoles.Fields.RoleId)));
+            var rolesToAssign = teamRoleAssignment.SecurityRoles?
+                .Select(roleId => DataverseService.RetrieveRole(roleId))
+                .Where(role => role != null)
+                .Select(r => r!)
+                .Where(r => !alreadyAssignedRoleIds.Contains(r.Id))
+                .ToList();
 
             if (rolesToAssign != null && rolesToAssign.Count > 0)
             {
                 DataverseService.AssignRolesToTeam(team, rolesToAssign);
-                PackageLogger.Log($"Assigned {rolesToAssign.Count} roles to team {team.Name} ({team.Id}): {string.Join(", ", rolesToAssign.Select(r => r.Name))}", TraceEventType.Information);
+                PackageLogger.Log($"Assigned {rolesToAssign.Count} new roles to team {team.Name} ({team.Id}): {string.Join(", ", rolesToAssign.Select(r => r.Name))}", TraceEventType.Information);
             }
 
             if (teamRoleAssignment.RemoveUnassigned ?? false)

@@ -106,7 +106,7 @@ internal class DataverseService
     {
         var query = new QueryExpression(TeamProfiles.EntityLogicalName)
         {
-            ColumnSet = new ColumnSet(false),
+            ColumnSet = new ColumnSet(true),
             Criteria = new FilterExpression
             {
                 Conditions =
