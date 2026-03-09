@@ -35,12 +35,18 @@ internal class SyncTeamCspsTask : TaskBase
             }
 
             var currentTeamCsps = DataverseService.RetrieveTeamProfiles(team);
-            var cspsToAssign = teamCspAssignment.ColumnSecurityProfiles?.Select(cspId => DataverseService.RetrieveFieldSecurityProfile(cspId)).Where(csp => csp != null).Select(c => c!).ToList();
+            var alreadyAssignedCspIds = new HashSet<Guid>(currentTeamCsps.Select(csp => csp.GetAttributeValue<Guid>(TeamProfiles.Fields.FieldSecurityProfileId)));
+            var cspsToAssign = teamCspAssignment.ColumnSecurityProfiles?
+                .Select(cspId => DataverseService.RetrieveFieldSecurityProfile(cspId))
+                .Where(csp => csp != null)
+                .Select(c => c!)
+                .Where(c => !alreadyAssignedCspIds.Contains(c.Id))
+                .ToList();
 
             if (cspsToAssign != null && cspsToAssign.Count > 0)
             {
                 DataverseService.AssignFieldSecurityProfilesToTeam(team, cspsToAssign);
-                PackageLogger.Log($"Assigned {cspsToAssign.Count} column security profiles to team {team.Name} ({team.Id}): {string.Join(", ", cspsToAssign.Select(c => c.Name))}", TraceEventType.Information);
+                PackageLogger.Log($"Assigned {cspsToAssign.Count} new column security profiles to team {team.Name} ({team.Id}): {string.Join(", ", cspsToAssign.Select(c => c.Name))}", TraceEventType.Information);
             }
 
             if (teamCspAssignment.RemoveUnassigned ?? false)
